@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Get Hadoop running on my Mac</title>
+<!-- 2017-10-15 Sun 18:12 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Gary Gu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Get Hadoop running on my Mac</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Introduction</a></li>
+<li><a href="#sec-2">2. Get the stable hadoop binary</a></li>
+<li><a href="#sec-3">3. Unzip the tar.gz to my home dir</a></li>
+<li><a href="#sec-4">4. Check java runtime exist (else install from Oracle)</a></li>
+<li><a href="#sec-5">5. Export env vars for hadoop and save it in ~/.bashrc</a></li>
+<li><a href="#sec-6">6. Get an idea of where basic hadoop commands reside</a></li>
+<li><a href="#sec-7">7. Check that bin/hadoop runs OK</a></li>
+<li><a href="#sec-8">8. Add default file system to the core config</a></li>
+<li><a href="#sec-9">9. Format the distributed disk</a></li>
+<li><a href="#sec-10">10. Start the DFS server, the namenode and datanode</a></li>
+<li><a href="#sec-11">11. Check the single node cluster</a></li>
+<li><a href="#sec-12">12. Where the log files are</a></li>
+<li><a href="#sec-13">13. Test the basic dfs commands</a></li>
+<li><a href="#sec-14">14. Start the YARN server, the resource manager</a></li>
+<li><a href="#sec-15">15. Check nodes and browse directory</a></li>
+<li><a href="#sec-16">16. Shutting down</a></li>
+<li><a href="#sec-17">17. Useful links</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This note logs the steps I've taken to get hadoop installed and running on my Mac Pro.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Get the stable hadoop binary</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+From the official place
+<a href="http://www.apache.org/dyn/closer.cgi/hadoop/common/">http://www.apache.org/dyn/closer.cgi/hadoop/common/</a>
+which suggested that the closest mirror site for me is 
+<a href="http://download.nextag.com/apache/hadoop/common/stable">http://download.nextag.com/apache/hadoop/common/stable</a>
+get the .tar.gz which is the binary file, which is about 255MB
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Unzip the tar.gz to my home dir</h2>
+<div class="outline-text-2" id="text-3">
+<pre class="example">
+bash-3.2$ cd
+bash-3.2$ which gzcat
+/usr/bin/gzcat
+bash-3.2$ gzcat ~/Downloads/hadoop-*.tar.gz |tar xf -
+bash-3.2$ du -hs ~/hadoop-*/
+486M	/Users/gug/hadoop-2.7.4/
+bash-3.2$
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Check java runtime exist (else install from Oracle)</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Since hadoop is written in java, I need to have a run-time java installation. And I do.
+</p>
+<pre class="example">
+bash-3.2$ which java
+/usr/bin/java
+
+bash-3.2$ java -version
+java version "1.8.0_144"
+Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
+Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
+
+bash-3.2$ /usr/libexec/java_home
+/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home
+bash-3.2$
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Export env vars for hadoop and save it in ~/.bashrc</h2>
+<div class="outline-text-2" id="text-5">
+<pre class="example">
+bash-3.2$ /usr/libexec/java_home
+/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home
+bash-3.2$ 
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home
+export HADOOP_HOME=/Users/gug/hadoop-2.7.4/
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Get an idea of where basic hadoop commands reside</h2>
+<div class="outline-text-2" id="text-6">
+<pre class="example">
+bash-3.2$ cd $HADOOP_HOME
+
+bash-3.2$ ll bin/h*
+-rwxr-xr-x  1 gug  staff   6488 Jul 31 20:35 bin/hadoop
+-rwxr-xr-x  1 gug  staff   8786 Jul 31 20:35 bin/hadoop.cmd
+-rwxr-xr-x  1 gug  staff  12223 Jul 31 20:35 bin/hdfs
+-rwxr-xr-x  1 gug  staff   7478 Jul 31 20:35 bin/hdfs.cmd
+
+bash-3.2$ ll sbin/st*.sh
+-rwxr-xr-x  1 gug  staff  1128 Jul 31 20:35 sbin/start-balancer.sh
+-rwxr-xr-x  1 gug  staff  3734 Jul 31 20:35 sbin/start-dfs.sh
+-rwxr-xr-x  1 gug  staff  1357 Jul 31 20:35 sbin/start-secure-dns.sh
+-rwxr-xr-x  1 gug  staff  1347 Jul 31 20:35 sbin/start-yarn.sh
+-rwxr-xr-x  1 gug  staff  1179 Jul 31 20:35 sbin/stop-balancer.sh
+-rwxr-xr-x  1 gug  staff  3206 Jul 31 20:35 sbin/stop-dfs.sh
+-rwxr-xr-x  1 gug  staff  1340 Jul 31 20:35 sbin/stop-secure-dns.sh
+-rwxr-xr-x  1 gug  staff  1340 Jul 31 20:35 sbin/stop-yarn.sh
+bash-3.2$
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Check that bin/hadoop runs OK</h2>
+<div class="outline-text-2" id="text-7">
+<pre class="example">
+bash-3.2$ $HADOOP_HOME/bin/hadoop
+Usage: hadoop [--config confdir] [COMMAND | CLASSNAME]
+  CLASSNAME            run the class named CLASSNAME
+ or
+  where COMMAND is one of:
+  fs                   run a generic filesystem user client
+  version              print the version
+  jar &lt;jar&gt;            run a jar file
+                       note: please use "yarn jar" to launch
+                             YARN applications, not this command.
+  checknative [-a|-h]  check native hadoop and compression libraries availability
+  distcp &lt;srcurl&gt; &lt;desturl&gt; copy file or directories recursively
+  archive -archiveName NAME -p &lt;parent path&gt; &lt;src&gt;* &lt;dest&gt; create a hadoop archive
+  classpath            prints the class path needed to get the
+  credential           interact with credential providers
+                       Hadoop jar and the required libraries
+  daemonlog            get/set the log level for each daemon
+  trace                view and modify Hadoop tracing settings
+
+Most commands print help when invoked w/o parameters.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Add default file system to the core config</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+The hdfs://localhost:9000 link allows other apps to communicate with hadoop running on my mac.
+</p>
+<pre class="example">
+bash-3.2$ cd $HADOOP_HOME
+
+bash-3.2$ ll etc/hadoop/core-site.xml*
+-rw-r--r--  1 gug  staff  872 Oct 14 19:23 etc/hadoop/core-site.xml
+-rw-r--r--  1 gug  staff  774 Jul 31 20:35 etc/hadoop/core-site.xml~
+
+bash-3.2$ diff etc/hadoop/core-site.xml etc/hadoop/core-site.xml~
+20,23d19
+&lt;   &lt;property&gt;
+&lt;     &lt;name&gt;fs.defaultFS&lt;/name&gt;
+&lt;     &lt;value&gt;hdfs://localhost:9000&lt;/value&gt;
+&lt;   &lt;/property&gt;
+bash-3.2$
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> Format the distributed disk</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+Similar to formatting the hard disk or SD card in the good old days.
+</p>
+<pre class="example">
+bash-3.2$ $HADOOP_HOME/bin/hdfs namenode -format
+2017-10-14 17:53:25,724 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = garys-mbp.home/192.168.1.16
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 3.0.0-beta1
+STARTUP_MSG:   classpath = 
+...
+2017-10-14 17:53:27,208 INFO common.Storage: Storage directory /tmp/hadoop-gug/dfs/name has been successfully formatted.
+2017-10-14 17:53:27,218 INFO namenode.FSImageFormatProtobuf: Saving image file /tmp/hadoop-gug/dfs/name/current/fsimage.ckpt_0000000000000000000 using no compression
+2017-10-14 17:53:27,321 INFO namenode.FSImageFormatProtobuf: Image file /tmp/hadoop-gug/dfs/name/current/fsimage.ckpt_0000000000000000000 of size 375 bytes saved in 0 seconds.
+2017-10-14 17:53:27,332 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid &gt;= 0
+2017-10-14 17:53:27,337 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at garys-mbp.home/192.168.1.16
+************************************************************/
+bash-3.2$
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> Start the DFS server, the namenode and datanode</h2>
+<div class="outline-text-2" id="text-10">
+<pre class="example">
+bash-3.2$ cd $HADOOP_HOME
+
+bash-3.2$ sbin/start-dfs.sh 
+17/10/14 19:24:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Starting namenodes on [localhost]
+Password:
+localhost: starting namenode, logging to /Users/gug/hadoop-2.7.4/logs/hadoop-gug-namenode-Garys-MBP.home.out
+Password:
+localhost: starting datanode, logging to /Users/gug/hadoop-2.7.4/logs/hadoop-gug-datanode-Garys-MBP.home.out
+Starting secondary namenodes [0.0.0.0]
+Password:
+0.0.0.0: starting secondarynamenode, logging to /Users/gug/hadoop-2.7.4/logs/hadoop-gug-secondarynamenode-Garys-MBP.home.out
+17/10/14 19:25:24 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+bash-3.2$ bin/hdfs dfs -mkdir /user
+17/10/14 19:25:43 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> Check the single node cluster</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+<a href="http://localhost:8088/cluster">http://localhost:8088/cluster</a>
+Click About on the left navigation panel and see something like below
+</p>
+
+<div class="figure">
+<p><img src="./img/localhost-8088.png" alt="localhost-8088.png" width="800px" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> Where the log files are</h2>
+<div class="outline-text-2" id="text-12">
+<pre class="example">
+bash-3.2$ cd $HADOOP_HOME
+
+bash-3.2$ ll logs/
+total 712
+-rw-r--r--  1 gug  staff      0 Oct 14 19:20 SecurityAuth-gug.audit
+-rw-r--r--  1 gug  staff  46992 Oct 15 09:01 hadoop-gug-datanode-Garys-MBP.home.log
+-rw-r--r--  1 gug  staff    507 Oct 14 19:25 hadoop-gug-datanode-Garys-MBP.home.out
+-rw-r--r--  1 gug  staff  69534 Oct 15 09:58 hadoop-gug-namenode-Garys-MBP.home.log
+-rw-r--r--  1 gug  staff   4960 Oct 15 09:19 hadoop-gug-namenode-Garys-MBP.home.out
+-rw-r--r--  1 gug  staff  51372 Oct 15 09:58 hadoop-gug-secondarynamenode-Garys-MBP.home.log
+-rw-r--r--  1 gug  staff    507 Oct 14 19:25 hadoop-gug-secondarynamenode-Garys-MBP.home.out
+drwxr-xr-x  2 gug  staff     68 Oct 14 19:32 userlogs
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><span class="section-number-2">13</span> Test the basic dfs commands</h2>
+<div class="outline-text-2" id="text-13">
+<pre class="example">
+bash-3.2$ cd $HADOOP_HOME
+
+bash-3.2$ bin/hdfs dfs -mkdir /user
+17/10/14 19:25:43 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+bash-3.2$ bin/hdfs dfs -mkdir /user/gug
+17/10/14 19:25:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+bash-3.2$ bin/hdfs dfs -put README.txt /user/gug/
+17/10/14 19:27:22 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+bash-3.2$ bin/hdfs dfs -ls /user/gug/
+17/10/14 19:27:35 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 1 items
+-rw-r--r--   3 gug supergroup       1366 2017-10-14 19:27 /user/gug/README.txt
+bash-3.2$ bin/hdfs dfs -ls /user/gug/README.txt
+
+bash-3.2$ bin/hdfs dfs -cat /user/gug/README.txt
+17/10/14 19:30:47 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+For the latest information about Hadoop, please visit our website at:
+....
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><span class="section-number-2">14</span> Start the YARN server, the resource manager</h2>
+<div class="outline-text-2" id="text-14">
+<pre class="example">
+bash-3.2$ cd $HADOOP_HOME
+
+bash-3.2$ sbin/start-yarn.sh 
+starting yarn daemons
+starting resourcemanager, logging to /Users/gug/hadoop-2.7.4/logs/yarn-gug-resourcemanager-Garys-MBP.home.out
+Password:
+localhost: starting nodemanager, logging to /Users/gug/hadoop-2.7.4/logs/yarn-gug-nodemanager-Garys-MBP.home.out
+bash-3.2$
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15"><span class="section-number-2">15</span> Check nodes and browse directory</h2>
+<div class="outline-text-2" id="text-15">
+<p>
+Once the YARN server is up, visit 
+<a href="http://localhost:50070">http://localhost:50070</a> to browse nodes
+</p>
+
+<div class="figure">
+<p><img src="./img/localhost-50070-overview.png" alt="localhost-50070-overview.png" width="800px" />
+</p>
+</div>
+
+<p>
+And other things.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/localhost-50070-browse-dir.png" alt="localhost-50070-browse-dir.png" width="800px" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16"><span class="section-number-2">16</span> Shutting down</h2>
+<div class="outline-text-2" id="text-16">
+<pre class="example">
+bash-3.2$ sbin/stop-dfs.sh
+17/10/15 17:47:51 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Stopping namenodes on [localhost]
+Password:
+localhost: stopping namenode
+Password:
+localhost: stopping datanode
+Stopping secondary namenodes [0.0.0.0]
+Password:
+0.0.0.0: stopping secondarynamenode
+17/10/15 17:48:49 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+bash-3.2$ sbin/stop-yarn.sh
+stopping yarn daemons
+stopping resourcemanager
+Password:
+localhost: no nodemanager to stop
+no proxyserver to stop
+bash-3.2$
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-17" class="outline-2">
+<h2 id="sec-17"><span class="section-number-2">17</span> Useful links</h2>
+<div class="outline-text-2" id="text-17">
+<p>
+<a href="http://hadoop.apache.org/">http://hadoop.apache.org/</a> 
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Gary Gu</p>
+<p class="date">Created: 2017-10-15 Sun 18:12</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
